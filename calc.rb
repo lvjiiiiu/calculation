@@ -16,6 +16,7 @@ else
 
   calc_array =[]
   unit_array = []
+ 
   formua_array.each do |ele|
     # eleが質量だった場合、ひとまずmgに変換
     if ele =~ /"[0-9]+[a-z]+"/
