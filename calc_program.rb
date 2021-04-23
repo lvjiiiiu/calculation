@@ -17,7 +17,20 @@ class Formula
   # 分離した数式を半角スペースで分割する
   def divide_element
     elements = []
-    elements = separate_fomula.chomp.split(' ')
+    p elements = separate_fomula.chomp.split(' ')
+  end
+
+  # 異常系の判定
+  def judge_abnormal
+    divide_element.each do |e|
+      # 引数の先頭が質量ではなかった場合
+      if divide_element[0] !~ /[0-9]+[a-z]+/
+        puts "あとで例外にする"
+      elsif e =~ /[0-9]+[a-z]+/ && e.include?("kg" || "g" || "mg")
+        puts "あとで例外にする"
+      else e 
+    
+
   end
 
   # 分離した数式を分解しそれぞれのパーツに分ける
