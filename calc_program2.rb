@@ -1,6 +1,4 @@
 
-
-
 # Formulaの責任：
 # 数式を分析する。(加工する)
 # 数式を計算する。
@@ -29,22 +27,38 @@ class Formula
   def elements_to_formula
     convert_unit_to_min.join
   end
-　
+
   # 計算する。(パブリックメソッド)
   def calculate
-    eval(elements_to_formula).convert_unit_to_correct
+    if analyze
+    else
+      sum_min_unit = eval(elements_to_formula)
+      convert_unit_to_correct(sum_min_unit)
+    end
   end
 
   # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+  # 単位のみ収集
+  def sort_units
+    sort_units = []
+    divide_element.select! do |e|
+      if e =~ /[0-9]+[a-z]+/
+        sort_units << e.slice(/[a-z]+/)
+      else
+      end
+    end
+    return sort_units
+  end
+
   # 最小単位で計算した結果を適切な単位に戻す。
-  def convert_unit_to_correct
-    if unit_array.include?("mg")
-      sum_mg.to_s + "mg"
-    elsif unit_array.include?("g")
-      ( sum_mg / 1000 ).to_s + "g"
-    else unit_array.include?("kg")
-      ( sum_mg / 1000000 ).to_s + "kg"
+  def convert_unit_to_correct(sum)
+    if sort_units.include?("mg")
+      sum.to_s + "mg"
+    elsif sort_units.include?("g")
+      ( sum / 1000 ).to_s + "g"
+    else sort_units.include?("kg")
+      ( sum / 1000000 ).to_s + "kg"
     end
   end
 
@@ -60,7 +74,7 @@ class Formula
         elsif unit == "g"
           num * 1000
         else
-          ele
+          num
         end
       else
         ele
@@ -68,62 +82,38 @@ class Formula
     end
   end
 
+#  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+  # 異常系の判定
+  def analyze
+    divide_element.each do |e|
+      mass_exp = /[0-9]+[a-z]+/
+      unit = e.slice(/[a-z]+/)
+      correct_units = ["mg", "g", "kg"]
+
+      # 引数の先頭が質量ではなかった場合
+      if divide_element[0] !~ mass_exp
+        raise ArgumentError.new("error: first argument must be weight-value(ex: 1kg)")
+      elsif (e =~ mass_exp) && !correct_units.any? {|c| unit == c }
+        raise ArgumentError.new("error: the unit must be one of mg,g,kg")
+      end
+    end
+    if separate_fomula =~ /[*\/] [0-9]+[a-z]+/
+      raise ArgumentError.new("error: multiplier & divisor must be a number at * , \/")
+    end
+  end
 end
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+# 呼び出し
 text = gets.chomp
 
 formula = Formula.new(text)
+
 p formula.calculate
 
 
-# クラスわけできない(T_T)
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-# Unitの責任：単位を変換する
-# class Unit
-#   attr_accessor :elements
-#   def initialize(elements)
-#     @elements = elements
-#   end
-
-#  # 単位を変換する
-#   def convert_unit_to_min
-#     elements.map! do |ele|
-#       if ele =~ /[0-9]+[a-z]+/
-#         unit = ele.slice(/[a-z]+/)
-#         num = ele.slice(/[0-9]+/)
-#         if unit == ["kg"]
-#           num*1000000
-#         elsif unit == ["g"]
-#           num*1000
-#         else
-#           num*1
-#         end
-#         unit = "mg"
-#       end
-#   end
-
-
-# end
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-
-
-  # 異常系の判定
-  def analayze
-    divide_element.each do |e|
-      # 引数の先頭が質量ではなかった場合
-      if divide_element[0] !~ /[0-9]+[a-z]+/
-        puts "あとで例外にする"
-      elsif (e =~ /[0-9]+[a-z]+/) && e.slice(/[a-z]+/)!= ("kg" || "g" || "mg")
-        p "あとで例外にする2"
-        p e
-      else
-      end
-    end
-  end
 
 
 
