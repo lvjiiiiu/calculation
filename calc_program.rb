@@ -1,7 +1,7 @@
 
 text = gets.chomp
 
-# Formulaの責任：数式を分類する。
+# Formulaの責任：数式を分類する。(加工する)
 class Formula
   attr_accessor :text
 
@@ -16,22 +16,34 @@ class Formula
 
   # 分離した数式を半角スペースで分割する
   def divide_element
-    elements = []
-    p elements = separate_fomula.chomp.split(' ')
+    separate_fomula.chomp.split(' ')
   end
 
+  def aaa
+    divide_element
+  end 
+
+  
+
   # 異常系の判定
-  def judge_abnormal
+  def analayze
+    valid_unit = ["kg", "g", "mg"]
     divide_element.each do |e|
+      
       # 引数の先頭が質量ではなかった場合
       if divide_element[0] !~ /[0-9]+[a-z]+/
         puts "あとで例外にする"
-      elsif e =~ /[0-9]+[a-z]+/ && e.include?("kg" || "g" || "mg")
-        puts "あとで例外にする"
-      else e 
-    
-
+      elsif (e =~ /[0-9]+[a-z]+/) && e.slice(/[a-z]+/)!= ("kg" || "g" || "mg")
+        p "あとで例外にする2"
+        p e
+      else
+      end
+    end
   end
+
+  
+
+  
 
   # 分離した数式を分解しそれぞれのパーツに分ける
   def sort_element
@@ -52,9 +64,7 @@ class Formula
         p "あとで例外にする"
       end
     end
-    p without_operators
-    p units
-    p operators
+ 
   end
 end
 
@@ -68,4 +78,6 @@ class Unit
 end
 
 formula = Formula.new(text)
-p formula.sort_element
+formula.sort_element
+formula.analayze
+
