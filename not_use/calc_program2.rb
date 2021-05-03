@@ -4,7 +4,6 @@
 # 数式を計算する。
 class Formula
   attr_accessor :text
-
   def initialize(text)
     @text = text
   end
@@ -108,9 +107,7 @@ end
 
 # 呼び出し
 text = gets.chomp
-
 formula = Formula.new(text)
-
 p formula.calculate
 
 
