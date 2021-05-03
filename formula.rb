@@ -7,14 +7,14 @@ class Formula
     @elements = elements
   end
 
-  # 計算する。
+  # 計算する
   def calculate
     eval(join_elements)
   end
 
-  # private
+  private
 
-  # 要素をつなぎ合わせて計算式にする。
+  # 要素をつなぎ合わせて計算式を作成
   def join_elements
     elements.join
   end
