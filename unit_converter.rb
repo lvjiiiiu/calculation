@@ -1,42 +1,41 @@
+require "./program_config"
 
 # UnitConverterの責任：
 # 単位を変換する
+
 class UnitConverter
+  include ProgramConfig
   attr_accessor :elements
   def initialize(elements)
     @elements = elements
   end
 
-  # 質量をmgに変換
-  def convert_to_mg
+  # 質量を最小(config_unitsで1と設定したもの)に変換
+  def convert_to_min
     elements.map do |ele|
       if ele =~ /[0-9]+[a-z]+/
         unit = ele.slice(/[a-z]+/)
         num = ele.slice(/[0-9]+/).to_i
-        if unit == "kg"
-          num * 1000000
-        elsif unit == "g"
-          num * 1000
-        else
-          num
+        config_units.map do |key, value|
+          if key == unit
+            ele = num * value
+          end
         end
-      else
-        ele
       end
+       ele
     end
   end
 
   # 最小単位で計算した結果を適切な単位に戻す。
-  def convert_unit_to_correct(result)
-
-    if sort_units.include?("mg")
-      result.to_s + "mg"
-    elsif sort_units.include?("g")
-      ( result / 1000 ).to_s + "g"
-    else sort_units.include?("kg")
-      ( result / 1000000 ).to_s + "kg"
+  def convert_to_correct(result)
+    config_units.each do |key, value|
+      if sort_units.include?(key)
+        return ( result / value ).to_s + key
+        break
+      end
     end
   end
+
 
   private
 
