@@ -17,7 +17,6 @@ class InputString
     text.match(/.\/calc '(.+)'/)[1]
   end
 
-
    # 異常系の判定
    def analyze
     divide_elements.each do |e|

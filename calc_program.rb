@@ -1,3 +1,6 @@
+require "/Users/aoiujiie/Desktop/プログラミング学習/ruby/字句解析と単位違いの四則演算/input_string.rb"
+require "/Users/aoiujiie/Desktop/プログラミング学習/ruby/字句解析と単位違いの四則演算/formula.rb"
+require "/Users/aoiujiie/Desktop/プログラミング学習/ruby/字句解析と単位違いの四則演算/unit_converter.rb"
 
 # 入力された文字列をtextに格納
 text = gets.chomp
@@ -24,6 +27,7 @@ else
   answer = unit_convert.convert_unit_to_correct(result_for_mg)
 
   puts answer
+  
 end
 
 

@@ -9,7 +9,7 @@ class UnitConverter
 
   # 質量をmgに変換
   def convert_to_mg
-    elements.map! do |ele|
+    elements.map do |ele|
       if ele =~ /[0-9]+[a-z]+/
         unit = ele.slice(/[a-z]+/)
         num = ele.slice(/[0-9]+/).to_i
@@ -28,6 +28,7 @@ class UnitConverter
 
   # 最小単位で計算した結果を適切な単位に戻す。
   def convert_unit_to_correct(result)
+
     if sort_units.include?("mg")
       result.to_s + "mg"
     elsif sort_units.include?("g")
@@ -42,7 +43,7 @@ class UnitConverter
   # 単位のみ収集
   def sort_units
     sort_units = []
-    divide_element.select! do |e|
+    elements.select! do |e|
       if e =~ /[0-9]+[a-z]+/
         sort_units << e.slice(/[a-z]+/)
       else
