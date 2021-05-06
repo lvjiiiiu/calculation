@@ -13,6 +13,7 @@ input_string = InputString.new(text)
 input_string.judge_abnormal
 
 # 異常なしなら計算を続ける
+# 入力された文字列を要素に分割
 elements = input_string.divide_elements
 
 # 単位変換(→最小単位)
